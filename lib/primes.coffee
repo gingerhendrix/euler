@@ -12,23 +12,27 @@ nextPrime = ->
 
   nextPrime()
     
-primesUpTo = (limit) ->
-  index = 0
-  finished = false
-  return next: ->
-    return false if finished
+primesUpTo = (limit, index=0, finished=false) ->
+  generator =
+    next: ->
+      return false if finished
 
-    if index < _primes.length
-      prime = _primes[index]
+      if index < _primes.length
+        prime = _primes[index]
 
-    else if _nextTrial <= limit
-      prime = nextPrime()
-    index++
+      else if _nextTrial <= limit
+        prime = nextPrime()
+      index++
 
-    return prime if prime <= limit
-    
-    finished = true
-    false
+      return prime if prime <= limit
+      
+      finished = true
+      false
+
+    clone: ->
+      primesUpTo(limit, index, finished)
+
+   generator
 
 
 isPrime = (d) ->
